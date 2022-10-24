@@ -1,0 +1,115 @@
+---
+id: ow-electron
+image: "/img/embed/dev-tools.jpg"
+title: OW-Electron
+draft: true
+---
+
+We currently have these npm packages:
+
+- [@overwolf/ow-electron](https://www.npmjs.com/package/@overwolf/ow-electron) is a package based on the
+[electron package](https://www.npmjs.com/package/electron), which adds a
+few features to it
+- [@overwolf/ow-electron-builder](https://www.npmjs.com/package/@overwolf/ow-electron-builder) is a packaged based on electron-builder which
+supports building ow-electron
+- @overwolf/electron-is-overwolf - similar to
+[electron-is-dev](https://www.npmjs.com/package/electron-is-dev)
+
+There is no problem that both packages reside side-by-side with the original
+electron/electron-builder packages in your project. You just have to create the new
+package.json scripts described [here](ow-electron/package#start-and-build).
+
+## package.json properties
+
+Each ow-electron app should have a unique id. The unique id is auto-generated
+based on the <productName/name + author.name> fields of the package.json.
+
+We use this for ad optimization and optionally, for
+[anonymous analytics](#anonymous-analytics) reports that you may review on our developer's console.
+
+> **NOTE:** To see the generated uid - you can use the OVERWOLF_APP_UID
+> environment variable (process.env.OVERWOLF_APP_UID) once the |app.whenReady|
+> triggers. Before the app is ready, the variable won't exist.
+
+## owadview tag
+
+> **NOTE:** In order to see ads, we first have to setup our backend to support
+> your app's uid (See package.json properties above).
+> Please contact us for further info on this
+> [contact us](https://overwolf.github.io/support/contact-us)
+
+The `<owadview/>` tag, which is based on the Electron `<webview/>` tag, hosts and
+auto manages ads in your app.
+
+To use it, place the `<owadview/>` tag (no attributes required) inside a `<div>` tag
+which has the size of the standard IAB ad unit you wish to display.
+
+See https://overwolf.github.io/start/monetize-with-ads/ads-monetization-basics
+for some more information about supported ad units + Dos’ and ‘Dont’s. This
+documentation is aimed at the Overwolf platform, however, the general ad
+details are relevant for the ow-electron build as well.
+
+```
+<div style="width: 400px;height: 300px; background: transparent;">
+  <owadview />
+</div>
+```
+
+> **NOTE:** We use background: transparent so that you can show a background
+> image as a fallback when there are no ads inventory to display.
+
+A few extra things to know:
+
+- The `<owadview/>` starts auto-muted. This can be changed, see
+https://www.electronjs.org/docs/latest/api/webview-tag#webviewsetaudiomutedmuted
+- The tag is self managed so there is no need to worry about visiblity of ads
+or crashes
+
+## Anonymous Analytics
+
+In order to generate some reports for you about the usage of your ow-electron
+app, we collect very few anonymous analytics (such as when the app is launched
+and when an app's window is shown).
+
+You can disable this via code:
+
+```
+import { app } from 'electron';
+
+app.overwolf.disableAnonymousAnalytics();
+
+...
+
+app.whenReady().then(...
+```
+
+> **NOTE:** This call isn't persistent across sessions - it needs to be called
+> every time the app is launched.
+
+
+## Consent Management Platform (CMP)
+
+CMP makes it easier for you to meet the technical requirements of the law by simplifying the legally required process of collecting consent to cookies.
+
+Before using your app, the user should be informed about the existence of the CMP and be able to easily access it.
+
+We recommend showing this information during the installation phase or as a first-time usage message.
+
+The ow-electron comes with a CMP implementation built in.
+
+> **NOTE:** You can leverage our Windows Installer for this (contact us).
+
+In order to know if the user is required to be informed about the CMP - use the |app.overwolf.isCMPRequired| api:
+
+```
+import { app } from 'electron';
+
+await app.overwolf.isCMPRequired();
+```
+
+In order to open the built-in CMP window - use the |app.overwolf.openCMPWindow| api:
+
+
+```
+app.overwolf.openCMPWindow();
+```

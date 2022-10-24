@@ -1,0 +1,21 @@
+---
+id: package
+image: "/img/embed/dev-tools.jpg"
+title: package.json
+draft: true
+---
+
+Included is a list of package.json changes that should be included when working with the [@overwolf/ow-electron](https://www.npmjs.com/package/@overwolf/ow-electron) package.
+
+## Start and Build
+
+To create new `start` and `build` commands, for testing and building your app:
+
+```json title="start and build command variants for @overwolf/ow-electron"
+"scripts": {
+  ...
+
+  "start:ow-electron": "ow-electron .",
+  "build:ow-electron": "ow-electron-builder --publish=never"
+},
+```
