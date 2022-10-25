@@ -5,111 +5,88 @@ title: OW-Electron
 draft: true
 ---
 
-We currently have these npm packages:
+Overwolf Electron is a solution built on top of [Electron](https://www.electronjs.org/), aimed at allowing Electron apps access to certain Overwolf APIs.
 
 - [@overwolf/ow-electron](https://www.npmjs.com/package/@overwolf/ow-electron) is a package based on the
-[electron package](https://www.npmjs.com/package/electron), which adds a
-few features to it
-- [@overwolf/ow-electron-builder](https://www.npmjs.com/package/@overwolf/ow-electron-builder) is a packaged based on electron-builder which
-supports building ow-electron
-- @overwolf/electron-is-overwolf - similar to
-[electron-is-dev](https://www.npmjs.com/package/electron-is-dev)
+[electron package](https://www.npmjs.com/package/electron) package, adding several new features to it.
+- [@overwolf/ow-electron-builder](https://www.npmjs.com/package/@overwolf/ow-electron-builder) is a package based on the 
+[electron-builder](https://www.npmjs.com/package/electron-builder) package, which supports building ow-electron apps.
+- [@overwolf/electron-is-overwolf](https://www.npmjs.com/package/@overwolf/electron-is-overwolf) - similar to the
+[electron-is-dev](https://www.npmjs.com/package/electron-is-dev) package, allows your app to check whether it's running as Overwolf Electron vs non-overwolf Electron.
 
-There is no problem that both packages reside side-by-side with the original
-electron/electron-builder packages in your project. You just have to create the new
-package.json scripts described [here](ow-electron/package#start-and-build).
+There is no problem for all of these packages to reside side-by-side with the original
+electron/electron-builder packages in your project. In order to be able to run your app with Overwolf Electron,
+you only need to add new start and build scripts in your package.json file:
 
-## package.json properties
+import StartAndBuild from './package/_build-and-start.mdx'
 
-Each ow-electron app should have a unique id. The unique id is auto-generated
-based on the <productName/name + author.name> fields of the package.json.
+<StartAndBuild/>
 
-We use this for ad optimization and optionally, for
-[anonymous analytics](#anonymous-analytics) reports that you may review on our developer's console.
+## Unique App ID
 
-> **NOTE:** To see the generated uid - you can use the OVERWOLF_APP_UID
-> environment variable (process.env.OVERWOLF_APP_UID) once the |app.whenReady|
-> triggers. Before the app is ready, the variable won't exist.
+import AppAndAuthorName from './package/_app-and-author-name.mdx'
 
-## owadview tag
+<AppAndAuthorName/>
 
-> **NOTE:** In order to see ads, we first have to setup our backend to support
-> your app's uid (See package.json properties above).
-> Please contact us for further info on this
-> [contact us](https://overwolf.github.io/support/contact-us)
+Unique app ids are used for ads optimizations, as well as for optional [anonymous analytics](#anonymous-analytics) reports that you may review on our developer's console.
 
-The `<owadview/>` tag, which is based on the Electron `<webview/>` tag, hosts and
-auto manages ads in your app.
+:::note Referring To App ID In Your app
+Once the `app.whenReady` promise resolves, your app's uid will be available, using the OVERWOLF_APP_UID environment variable (process.env.OVERWOLF_APP_UID).
+However, note that if you try to access it before the app is ready, the variable simply won't exist.
+:::
 
-To use it, place the `<owadview/>` tag (no attributes required) inside a `<div>` tag
-which has the size of the standard IAB ad unit you wish to display.
+## The owadview tag
 
-See https://overwolf.github.io/start/monetize-with-ads/ads-monetization-basics
-for some more information about supported ad units + Dos’ and ‘Dont’s. This
-documentation is aimed at the Overwolf platform, however, the general ad
-details are relevant for the ow-electron build as well.
+import OverwolfAdView from './overwolf-ad-view/_overwolf-ad-view.mdx'
 
-```
-<div style="width: 400px;height: 300px; background: transparent;">
-  <owadview />
-</div>
-```
-
-> **NOTE:** We use background: transparent so that you can show a background
-> image as a fallback when there are no ads inventory to display.
-
-A few extra things to know:
-
-- The `<owadview/>` starts auto-muted. This can be changed, see
-https://www.electronjs.org/docs/latest/api/webview-tag#webviewsetaudiomutedmuted
-- The tag is self managed so there is no need to worry about visiblity of ads
-or crashes
+<OverwolfAdView/>
 
 ## Anonymous Analytics
 
-In order to generate some reports for you about the usage of your ow-electron
-app, we collect very few anonymous analytics (such as when the app is launched
-and when an app's window is shown).
+In order to generate usage reports for your Overwolf Electron app, we collect a small number of anonymous analytics (such as when the app is launched,
+and when a certain app's window is shown).
 
-You can disable this via code:
+You can disable these analytics with the following piece of code:
 
-```
+```js
 import { app } from 'electron';
 
 app.overwolf.disableAnonymousAnalytics();
 
 ...
 
-app.whenReady().then(...
+app.whenReady().then(...)
 ```
 
-> **NOTE:** This call isn't persistent across sessions - it needs to be called
-> every time the app is launched.
-
+:::note Disabling Analytics
+App analytics are disabled on a per-session basis. If you wish to completely disable them, you must do so before every app start, when initailizing your app.
+:::
 
 ## Consent Management Platform (CMP)
 
-CMP makes it easier for you to meet the technical requirements of the law by simplifying the legally required process of collecting consent to cookies.
+CMP makes it easier for you to meet the legal requirements governing data collection in certain parts of the world,
+by helping you handle the process of receiving consent to collect user cookies.
 
-Before using your app, the user should be informed about the existence of the CMP and be able to easily access it.
+Before using your app, users should be informed about the existence of the CMP, as well as where to find it.
 
-We recommend showing this information during the installation phase or as a first-time usage message.
+We recommend introducing it during the installation phase or as a first-time usage message.
 
-The ow-electron comes with a CMP implementation built in.
+Overwolf Electron comes with a built in CMP implementation.
 
-> **NOTE:** You can leverage our Windows Installer for this (contact us).
+:::note Windows Installer CMP
+Our Windows installer automatically handles the introduction of the CMP to users. If you wish to use it, [ask us for more details](/support/contact-us).
+:::
 
-In order to know if the user is required to be informed about the CMP - use the |app.overwolf.isCMPRequired| api:
+In order to know if the user is required to be informed about the CMP - you can use the `app.overwolf.isCMPRequired` method:
 
-```
+```js
 import { app } from 'electron';
 
 await app.overwolf.isCMPRequired();
 ```
 
-In order to open the built-in CMP window - use the |app.overwolf.openCMPWindow| api:
+To open the built-in CMP window - use the `app.overwolf.openCMPWindow` method:
 
-
-```
+```js
 app.overwolf.openCMPWindow();
 ```
