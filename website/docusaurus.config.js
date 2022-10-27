@@ -83,6 +83,10 @@ function applyOverrides(items) {
           }
           item.sidebarPosition = item.frontMatter.sidebar_position
 
+          if(propExists(item.frontMatter, "overwolf_platform") && !item.frontMatter.sidebar_label.match(/\[OW\]/)){
+            item.frontMatter.sidebar_label += "[OW]"
+          }
+
           if (propExists(element, "implicit")) {
             if (item.frontMatter.sidebar_label != undefined) return
             item.frontMatter.sidebar_label = item.frontMatter.title
@@ -100,12 +104,18 @@ function applyOverrides(items) {
           if (propExists(element, "capitalize")) {
             item.frontMatter.sidebar_label = item.frontMatter.sidebar_label.split(/[ .-]/gm).map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
           }
-
         }
       }
     });
     return item;
   })
+}
+
+function classNamer(customProps){
+  var result = []
+  if(customProps.overwolf_platform) result.push("platform")
+  if(customProps.electron_platform) result.push("electron")
+  return result.join(" ");
 }
 
 function applyOverridePlasters(items, flattenCount, inverted, subsetReg, subsetRename, sort) {
@@ -117,10 +127,18 @@ function applyOverridePlasters(items, flattenCount, inverted, subsetReg, subsetR
     var thisSubsetReg = subsetReg
     var thisSubsetRename = subsetRename
     var thisSort = sort
+    if(propExists(item, "customProps")){
+      var className = classNamer(item.customProps)
+      if(className != "")
+      {
+        if(item.className) className = `${item.className} ${className}`
+        item.className = className;
+      } 
+    }
     if (item.type === "category") {
       sidebarOverrides["plasters"]["categories"].forEach(element => {
         if (id = propExists(element, "id")) {
-          if (item.link && item.link.id.match(new RegExp(id))) {
+          if (item.link && item.link.id && item.link.id.match(new RegExp(id))) {
             if ((layers = propExists(element, "flattenChildren")) != undefined) {
               thisFlatten = layers
             }
@@ -162,7 +180,8 @@ async function sidebarsOverrides({ defaultSidebarItemsGenerator, ...args }) {
       }
     }
   }
-  return applyOverridePlasters(await defaultSidebarItemsGenerator(args), undefined, false, undefined, undefined, false)
+  let x = await defaultSidebarItemsGenerator(args);
+  return applyOverridePlasters(x, undefined, false, undefined, undefined, false)
 }
 
 function propExists(object, prop) {
