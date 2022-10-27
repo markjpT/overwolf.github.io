@@ -1,21 +1,20 @@
 ---
 id: ow-electron
 image: "/img/embed/dev-tools.jpg"
-title: OW-Electron
+title: ow-electron
 draft: true
 ---
 
-Overwolf Electron is a solution built on top of [Electron](https://www.electronjs.org/), aimed at allowing Electron apps access to certain Overwolf APIs.
+ow-electron is a solution built on top of [electron](https://www.electronjs.org/), aimed at allowing electron apps access to Overwolf APIs.
 
 - [@overwolf/ow-electron](https://www.npmjs.com/package/@overwolf/ow-electron) is a package based on the
-[electron package](https://www.npmjs.com/package/electron) package, adding several new features to it.
+[electron](https://www.npmjs.com/package/electron) package, adding several new features to it.
 - [@overwolf/ow-electron-builder](https://www.npmjs.com/package/@overwolf/ow-electron-builder) is a package based on the 
 [electron-builder](https://www.npmjs.com/package/electron-builder) package, which supports building ow-electron apps.
 - [@overwolf/electron-is-overwolf](https://www.npmjs.com/package/@overwolf/electron-is-overwolf) - similar to the
-[electron-is-dev](https://www.npmjs.com/package/electron-is-dev) package, allows your app to check whether it's running as Overwolf Electron vs non-overwolf Electron.
+[electron-is-dev](https://www.npmjs.com/package/electron-is-dev) package, allows your app to check whether it's currently running as ow-electron, or as a non-overwolf electron app.
 
-There is no problem for all of these packages to reside side-by-side with the original
-electron/electron-builder packages in your project. In order to be able to run your app with Overwolf Electron,
+There is no problem with running both ow-electron and electron side-by-side on the same project. In order to run your app with ow-electron,
 you only need to add new start and build scripts in your package.json file:
 
 import StartAndBuild from './package/_build-and-start.mdx'
@@ -31,7 +30,7 @@ import AppAndAuthorName from './package/_app-and-author-name.mdx'
 Unique app ids are used for ads optimizations, as well as for optional [anonymous analytics](#anonymous-analytics) reports that you may review on our developer's console.
 
 :::note Referring To App ID In Your app
-Once the `app.whenReady` promise resolves, your app's uid will be available, using the OVERWOLF_APP_UID environment variable (process.env.OVERWOLF_APP_UID).
+Once the `app.whenReady` promise resolves, your app's uid will be available, using the `OVERWOLF_APP_UID` environment variable (`process.env.OVERWOLF_APP_UID`).
 However, note that if you try to access it before the app is ready, the variable simply won't exist.
 :::
 
@@ -39,11 +38,11 @@ However, note that if you try to access it before the app is ready, the variable
 
 import OverwolfAdView from './overwolf-ad-view/_overwolf-ad-view.mdx'
 
-<OverwolfAdView/>
+<OverwolfAdView p="hello"/>
 
 ## Anonymous Analytics
 
-In order to generate usage reports for your Overwolf Electron app, we collect a small number of anonymous analytics (such as when the app is launched,
+In order to generate usage reports for your ow-electron app, we collect a small number of anonymous analytics (such as when the app is launched,
 and when a certain app's window is shown).
 
 You can disable these analytics with the following piece of code:
@@ -71,13 +70,13 @@ Before using your app, users should be informed about the existence of the CMP, 
 
 We recommend introducing it during the installation phase or as a first-time usage message.
 
-Overwolf Electron comes with a built in CMP implementation.
+ow-electron comes with a built in CMP implementation.
 
 :::note Windows Installer CMP
 Our Windows installer automatically handles the introduction of the CMP to users. If you wish to use it, [ask us for more details](/support/contact-us).
 :::
 
-In order to know if the user is required to be informed about the CMP - you can use the `app.overwolf.isCMPRequired` method:
+In order to know if the user is required to be informed about the CMP - you can use the `app.overwolf.isCMPRequired()` method:
 
 ```js
 import { app } from 'electron';
@@ -85,7 +84,7 @@ import { app } from 'electron';
 await app.overwolf.isCMPRequired();
 ```
 
-To open the built-in CMP window - use the `app.overwolf.openCMPWindow` method:
+To open the built-in CMP window - use the `app.overwolf.openCMPWindow()` method:
 
 ```js
 app.overwolf.openCMPWindow();
