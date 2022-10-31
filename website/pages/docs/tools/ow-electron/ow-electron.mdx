@@ -3,6 +3,9 @@ id: ow-electron
 image: "/img/embed/dev-tools.jpg"
 title: ow-electron
 draft: true
+sidebar_custom_props:
+  overwolf_platform: false
+  electron_platform: true
 ---
 
 ow-electron is a solution built on top of [electron](https://www.electronjs.org/), aimed at allowing electron apps access to Overwolf APIs.
@@ -36,9 +39,9 @@ However, note that if you try to access it before the app is ready, the variable
 
 ## The owadview tag
 
-import OverwolfAdView from './overwolf-ad-view/_overwolf-ad-view.mdx'
+import OverwolfAdView from './overwolf-ad-view/_tag.mdx'
 
-<OverwolfAdView p="hello"/>
+<OverwolfAdView/>
 
 ## Anonymous Analytics
 
@@ -63,29 +66,9 @@ App analytics are disabled on a per-session basis. If you wish to completely dis
 
 ## Consent Management Platform (CMP)
 
-CMP makes it easier for you to meet the legal requirements governing data collection in certain parts of the world,
-by helping you handle the process of receiving consent to collect user cookies.
 
-Before using your app, users should be informed about the existence of the CMP, as well as where to find it.
+import CMPIntro from "./consent-management-platform/_introduction.mdx"
 
-We recommend introducing it during the installation phase or as a first-time usage message.
+<CMPIntro/>
 
-ow-electron comes with a built in CMP implementation.
-
-:::note Windows Installer CMP
-Our Windows installer automatically handles the introduction of the CMP to users. If you wish to use it, [ask us for more details](/support/contact-us).
-:::
-
-In order to know if the user is required to be informed about the CMP - you can use the `app.overwolf.isCMPRequired()` method:
-
-```js
-import { app } from 'electron';
-
-await app.overwolf.isCMPRequired();
-```
-
-To open the built-in CMP window - use the `app.overwolf.openCMPWindow()` method:
-
-```js
-app.overwolf.openCMPWindow();
-```
+For more infromation about the CMP and how to work with it, refer to [Consent-Management-Platform](ow-electron/consent-management-platform).
