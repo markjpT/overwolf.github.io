@@ -12,10 +12,6 @@
     "from": "/docs/api/games-external-apis"
   },
   {
-    "to": "/api/games/ids",
-    "from": "/docs/api/games-ids"
-  },
-  {
     "to": "/api/games/launchers/ids",
     "from": "/docs/api/launchers-ids"
   },
@@ -69,7 +65,7 @@
   },
   {
     "to": "/api/games/ids",
-    "from": "/docs/api/overwolf-games-events-autochess"
+    "from": ["/docs/api/overwolf-games-events-autochess", "/docs/api/games-ids"]
   },
   {
     "to": "/api/games/events/counter-strike-global-offensive",
@@ -414,10 +410,6 @@
     "from": "/docs/start/community-alphas"
   },
   {
-    "to": "/start/basic-app",
-    "from": "/docs/start/creating-demo-app"
-  },
-  {
     "to": "/start/submit-your-app/custom-installer-for-your-app",
     "from": "/docs/start/custom-installer-for-your-app"
   },
@@ -459,7 +451,10 @@
   },
   {
     "to": "/start/basic-app",
-    "from": "/docs/start/sample-app-overview"
+    "from": [
+      "/docs/start/sample-app-overview",
+      "/docs/start/creating-demo-app"
+    ]
   },
   {
     "to": "/start/basic-app/ui-components",
@@ -468,10 +463,6 @@
   {
     "to": "/start/getting-started/sdk-introduction",
     "from": "/docs/start/sdk-introduction"
-  },
-  {
-    "to": "/start/maintain-your-app/submit-an-app-update",
-    "from": "/docs/start/submit-an-app-update"
   },
   {
     "to": "/start/getting-started/submit-app-proposal",
@@ -516,7 +507,8 @@
     "to": "/start/maintain-your-app/submit-an-app-update",
     "from": [
       "/docs/start/update-your-app-status",
-      "/start/maintain-your-app/update-your-app-status"
+      "/start/maintain-your-app/update-your-app-status",
+      "/docs/start/submit-an-app-update"
     ]
   },
   {
@@ -528,16 +520,8 @@
     "from": "/docs/start/warzone-compliance"
   },
   {
-    "to": "/status",
-    "from": "/docs/status/all"
-  },
-  {
     "to": "/status/apex-legends",
     "from": "/docs/status/apex"
-  },
-  {
-    "to": "/status",
-    "from": "/docs/status/auto-chess"
   },
   {
     "to": "/status/counter-strike-global-offensive",
@@ -614,10 +598,10 @@
   {
     "to": "/status/overwatch",
     "from": "/docs/status/overwatch"
-  },
+  },  
   {
     "to": "/status",
-    "from": "/docs/status/past-incidents"
+    "from": ["/docs/status/auto-chess", "/docs/status/all", "/docs/status/past-incidents"]
   },
   {
     "to": "/status/path-of-exile",

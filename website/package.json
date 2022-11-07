@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "generate": "cd ../scripts && node generate.js && cd ../website && tsc",
     "docusaurus": "docusaurus",
-    "start": "cd ../scripts && node generate.js && cd ../website && yarn tsc && docusaurus start",
-    "build": "cd ../scripts && node generate.js && cd ../website && yarn tsc && docusaurus build",
+    "validate": "cd ../scripts && node validators/automatic/empty-temp-redirects.js && node validators/automatic/empty-temp-redirects.js",
+    "start": "yarn generate && docusaurus start",
+    "build": "yarn generate && docusaurus build",
     "swizzle": "docusaurus swizzle",
-    "deploy": "cd ../scripts && node generate.js && cd ../website && yarn tsc && docusaurus deploy",
+    "deploy": "yarn generate && docusaurus deploy",
     "clear": "cd ../scripts && node clear.js && cd ../website && docusaurus clear",
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
@@ -16,6 +18,7 @@
   "dependencies": {
     "@docusaurus/core": "^2.1.0",
     "@docusaurus/plugin-client-redirects": "^2.1.0",
+    "@docusaurus/plugin-debug": "^2.2.0",
     "@docusaurus/preset-classic": "^2.1.0",
     "@mdx-js/mdx": "^2.1.1",
     "@mdx-js/react": "^1.6.22",
@@ -46,5 +49,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "packageManager": "yarn@3.2.4",
+  "resolutions": {
+    "@docusaurus/plugin-content-docs@2.1.0": "patch:@docusaurus/plugin-content-docs@npm%3A2.1.0#./.yarn/patches/@docusaurus-plugin-content-docs-npm-2.1.0-e33a6bac60.patch"
   }
 }
