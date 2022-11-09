@@ -19,5 +19,5 @@
   "dependencies": {
     "remarkable-admonitions": "^0.2.1"
   },
-  "type": "module"
+  "type": "commonjs"
 }
