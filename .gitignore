@@ -14,3 +14,4 @@ website/.yarn
 website/.yarnrc.yml
 website/yarn.lock
 yarn.lock
+.fake
